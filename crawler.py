@@ -1,7 +1,8 @@
 from bs4 import BeautifulSoup
-import requests as req
-import re
 from urllib.parse import urljoin
+
+import requests as req
+import csv
 import time
 
 
@@ -72,6 +73,11 @@ class SiteCrawler:
         print("FETCHED URLS: " + str(len(self.fetched_urls)))
         print("VISITED URLS: " + str(len(self.visited_links)))
 
+        with open('links.csv', 'w', newline='') as csvfile:
+            filewriter = csv.writer(csvfile, delimiter=';', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            for url in self.fetched_urls:
+                filewriter.writerow([url])
 
-crawler = SiteCrawler("https://www.uni-muenchen.de/index.html", 11)
+
+crawler = SiteCrawler("https://www.uni-muenchen.de/index.html", 5)
 crawler.fetch(crawler.non_visited_links.__getitem__(0))
